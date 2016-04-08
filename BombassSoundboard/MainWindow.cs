@@ -12,11 +12,15 @@ namespace BombassSoundboard {
         }
 
         private void MainWindow_Load(object sender, EventArgs e) {
-
+            populateSounds();
         }
 
-        public void populateSounds() {
-            
+        private void populateSounds() {
+            foreach (Sound sound in Program.player.getSounds()) {
+                String filetype = "WAV audio file";
+                if (sound.isMP3()) filetype = "MP3 audio file";
+                SoundBox.Items.Add(new ListViewItem(new[] { sound.name, sound.location, filetype, sound.keybind.ToString() }));
+            }
         }
 
         private void QuitButton_Click(object sender, EventArgs e) {
@@ -36,6 +40,10 @@ namespace BombassSoundboard {
         private void Quit() {
             Program.player.Dispose();
             Close();
+        }
+
+        private void RefreshButton_Click(object sender, EventArgs e) {
+            populateSounds();
         }
     }
 }

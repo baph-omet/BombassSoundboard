@@ -32,10 +32,10 @@
             this.RefreshButton = new System.Windows.Forms.Button();
             this.TitleLabel = new System.Windows.Forms.Label();
             this.SoundBox = new System.Windows.Forms.ListView();
-            this.Sound = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Location = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.FileType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Shortcut = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.SoundColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.LocationColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.FileTypeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.ShortcutColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.RemoveButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -110,6 +110,7 @@
             this.RefreshButton.TabIndex = 8;
             this.RefreshButton.Text = "Refresh sounds";
             this.RefreshButton.UseVisualStyleBackColor = true;
+            this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
             // TitleLabel
             // 
@@ -126,17 +127,37 @@
             // 
             this.SoundBox.AllowColumnReorder = true;
             this.SoundBox.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.Sound,
-            this.Location,
-            this.FileType,
-            this.Shortcut});
+            this.SoundColumn,
+            this.LocationColumn,
+            this.FileTypeColumn,
+            this.ShortcutColumn});
             this.SoundBox.FullRowSelect = true;
-            this.SoundBox.Location = new System.Drawing.Point(13, 40);
+            this.SoundBox.Location = new System.Drawing.Point(12, 40);
             this.SoundBox.Name = "SoundBox";
             this.SoundBox.Size = new System.Drawing.Size(1077, 514);
             this.SoundBox.TabIndex = 10;
             this.SoundBox.UseCompatibleStateImageBehavior = false;
-            this.SoundBox.View = System.Windows.Forms.View.List;
+            this.SoundBox.View = System.Windows.Forms.View.Details;
+            // 
+            // SoundColumn
+            // 
+            this.SoundColumn.Text = "Sound";
+            this.SoundColumn.Width = 261;
+            // 
+            // LocationColumn
+            // 
+            this.LocationColumn.Text = "Location";
+            this.LocationColumn.Width = 326;
+            // 
+            // FileTypeColumn
+            // 
+            this.FileTypeColumn.Text = "File Type";
+            this.FileTypeColumn.Width = 224;
+            // 
+            // ShortcutColumn
+            // 
+            this.ShortcutColumn.Text = "Shortcut Key";
+            this.ShortcutColumn.Width = 275;
             // 
             // RemoveButton
             // 
@@ -185,10 +206,12 @@
         private System.Windows.Forms.Button RefreshButton;
         private System.Windows.Forms.Label TitleLabel;
         private System.Windows.Forms.ListView SoundBox;
-        private System.Windows.Forms.ColumnHeader Sound;
-        private System.Windows.Forms.ColumnHeader Location;
-        private System.Windows.Forms.ColumnHeader FileType;
-        private System.Windows.Forms.ColumnHeader Shortcut;
+        private System.Windows.Forms.ColumnHeader SoundColumn;
+#pragma warning disable CS0108 // Member hides inherited member; missing new keyword
+        private System.Windows.Forms.ColumnHeader LocationColumn;
+#pragma warning restore CS0108 // Member hides inherited member; missing new keyword
+        private System.Windows.Forms.ColumnHeader FileTypeColumn;
+        private System.Windows.Forms.ColumnHeader ShortcutColumn;
         private System.Windows.Forms.Button RemoveButton;
     }
 }

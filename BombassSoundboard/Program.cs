@@ -1,14 +1,17 @@
-﻿using System;
+﻿using BombassSoundboard.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace BombassSoundboard {
     public static class Program {
 
         public static AudioPlayer player;
+        public static XmlDocument registry;
 
         /// <summary>
         /// The main entry point for the application.
@@ -24,16 +27,13 @@ namespace BombassSoundboard {
 
         private static void initialize() {
             player = new AudioPlayer();
-            loadSounds();
-        }
+            registry = new XmlDocument();
 
-        public static void loadSounds() {
-            foreach (String filename in Directory.GetFiles(Directory.GetCurrentDirectory())) {
-                String extension = filename.Split('.')[1].ToLower();
-                if ((new String[] { "wav", "mp3" }).Contains(extension)) {
-                    //TODO: load sound from XML file
-                }
-            }
+            string registrypath = Directory.GetCurrentDirectory() + "\\Registry.xml";
+            if (!File.Exists(registrypath)) File.Copy("Registry.xml", registrypath);
+            registry.Load(registrypath);
+
+            player.loadSounds();
         }
     }
 }
