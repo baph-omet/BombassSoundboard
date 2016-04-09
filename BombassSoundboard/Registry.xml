@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<sound>
-  <name>And His Name Is</name>
-  <path>john cena.mp3</path>
-  <keybind></keybind>
-</sound>
+<!--DO NOT EDIT THIS UNLESS YOU KNOW WHAT YOU'RE DOING-->
+<sounds>
+  <sound>
+    <name>And His Name Is</name>
+    <path>john cena.mp3</path>
+    <keybind></keybind>
+    <plays>5</plays>
+  </sound>
+</sounds>

@@ -11,6 +11,7 @@ namespace BombassSoundboard {
         /// The path to the loaded file. This is also the alias used to identify the stream.
         /// </summary>
         private string path = "";
+        private bool open = false;
 
         [DllImport("winmm.dll")]
         private static extern long mciSendString(string strCommand, StringBuilder strReturn, int iReturnLength, IntPtr hwndCallback);
@@ -22,8 +23,9 @@ namespace BombassSoundboard {
 
         public void Open(String path) {
             this.path = path;
-            const string FORMAT = @"open ""{0}"" type mpegvideo alias {0}";
+            const string FORMAT = @"open ""{0}""";// type mpegvideo alias {0}";
             SendCommand(String.Format(FORMAT, path));
+            open = true;
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace BombassSoundboard {
         /// </summary>
         /// <exception cref="MultiMediaException"></exception>
         public void Pause() {
-            SendCommand("pause " + path);
+            SendCommand("pause \"" + path + "\"");
         }
 
         /// <summary>
@@ -39,7 +41,8 @@ namespace BombassSoundboard {
         /// </summary>
         /// <exception cref="MultiMediaException"></exception>
         public void Close() {
-            if (path.Length > 0) SendCommand("close " + path);
+            if (open && path.Length > 0) SendCommand("close \"" + path + "\"");
+            open = false;
         }
 
         /// <summary>
@@ -58,7 +61,7 @@ namespace BombassSoundboard {
         /// </summary>
         /// <exception cref="MultiMediaException"></exception>
         public void Stop() {
-            if (path.Length > 0) SendCommand("stop " + path);
+            if (open && path.Length > 0) SendCommand("stop \"" + path + "\"");
         }
 
         /// <summary>

@@ -9,7 +9,8 @@ using System.Xml;
 
 namespace BombassSoundboard {
     public class Sound {
-        public String name {
+        private String name;
+        public String Name {
             get {
                 return name;
             }
@@ -20,7 +21,19 @@ namespace BombassSoundboard {
         }
         public String location { get; }
 
-        public Char keybind {
+        private int plays;
+        public int Plays {
+            get { return plays; }
+            set {
+                if (value >= 0) {
+                    update("plays", value.ToString());
+                    plays = value;
+                }
+            }
+        }
+
+        private Char keybind;
+        public Char Keybind {
             get {
                 return keybind;
             }
@@ -32,12 +45,14 @@ namespace BombassSoundboard {
 
         public Sound(String location) : this(location, location.Split('\\')[location.Split('\\').Length - 1], '\0') { }
         public Sound(String location, String name) : this(location, name, '\0') { }
-        public Sound(String location, String name, Char keybind) {
+        public Sound(String location, String name, Char keybind) : this(location,name,keybind,0) { }
+        public Sound(String location, String name, Char keybind, int plays) {
             if (!File.Exists(location)) throw new ArgumentException("Invalid file location. No file located at " + location);
             else if (!(new String[] { "wav", "mp3" }.Contains(location.Split('.')[1].ToLower()))) throw new ArgumentException("Invalid file type. Must be either .wav or .mp3");
             this.location = location;
-            this.name = name;
-            this.keybind = keybind;
+            this.Name = name;
+            this.Keybind = keybind;
+            this.Plays = plays;
         }
 
         public void play() {
@@ -52,13 +67,27 @@ namespace BombassSoundboard {
         private void update(String property, String newValue) {
             XmlNode node = null;
 
-            foreach (XmlNode n in Program.registry.ChildNodes) {
+            String filename = location.Split('\\')[location.Split('\\').Length - 1];
+
+            foreach (XmlNode n in Program.registry.GetElementsByTagName("sounds")[0].ChildNodes) {
                 foreach (XmlNode child in n.ChildNodes) {
-                    if (child.Name.Equals("path") && child.InnerText.Equals(location)) node = n;
+                    if (child.Name.Equals("path") && child.InnerText.Equals(filename)) {
+                        node = n;
+                        break;
+                    }
                 }
+                if (node != null) break;
             }
 
-            if (node != null) foreach (XmlNode child in node.ChildNodes) if (child.Name.Equals(property)) child.InnerText = newValue;
+            if (node != null) {
+                foreach (XmlNode child in node.ChildNodes) {
+                    if (child.Name.Equals(property)) {
+                        child.InnerText = newValue;
+                        Program.registry.Save(Directory.GetCurrentDirectory() + "\\Registry.xml");
+                        break;
+                    }
+                }
+            }
         }
     }
 }

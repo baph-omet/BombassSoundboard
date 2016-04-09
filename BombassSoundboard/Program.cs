@@ -13,16 +13,23 @@ namespace BombassSoundboard {
         public static AudioPlayer player;
         public static XmlDocument registry;
 
+        public static MainWindow window;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main() {
-            initialize();
+            try {
+                initialize();
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                window = new MainWindow();
+                Application.Run(window);
+            } catch (Exception e) {
+                MessageBox.Show("An unexpected error occurred. Here are the details:\n" + e.ToString(), "Program Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private static void initialize() {
@@ -30,8 +37,15 @@ namespace BombassSoundboard {
             registry = new XmlDocument();
 
             string registrypath = Directory.GetCurrentDirectory() + "\\Registry.xml";
-            if (!File.Exists(registrypath)) File.Copy("Registry.xml", registrypath);
+            if (!File.Exists(registrypath)) {
+                XmlDocument reg = new XmlDocument();
+                reg.AppendChild(reg.CreateNode("element", "sounds", ""));
+                reg.Save(registrypath);
+            }
+                //File.Copy("Registry.xml", registrypath);
             registry.Load(registrypath);
+
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "\\Sounds")) Directory.CreateDirectory(Directory.GetCurrentDirectory() + "\\Sounds");
 
             player.loadSounds();
         }
